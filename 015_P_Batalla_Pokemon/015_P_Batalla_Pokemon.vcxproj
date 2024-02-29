@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="015_P_Batalla_Pokemon.cpp" />
+    <ClCompile Include="Mokepon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mokepon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
