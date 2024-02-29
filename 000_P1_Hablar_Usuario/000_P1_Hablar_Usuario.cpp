@@ -1,22 +1,36 @@
-// 000_P1_Hablar_Usuario.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+// 000_P1_Hablar_Usuario.cpp
+// Adrian Orozco Anzures
+// Hablar con el usuario usando los metodos de IOStream
 //
 
 #include <iostream>
+#include <locale>
 #include <string>
 #include <memory>
+#include <unordered_map>
+using namespace std;
+
 
 int main()
 {
-    std::unique_ptr<std::string> ptr_str = std::make_unique<std::string>("Hello World!\n");
-    std::cout << *ptr_str;
+    // Set the locale to es_MX
+    locale::global(locale("es_MX.UTF-8"));
+
+    unique_ptr<string> ptr_str    = make_unique<string>("Hello World!\n");
+    unique_ptr<string> ptr_phrase = make_unique<string>("Seek the golden path\n");
+
+    cout << *ptr_str << *ptr_phrase;
+
+    unordered_map<string, string> alumni = {
+        {"zap1085", "Adrián"}
+    };
+
+    for (pair<const string, string> item: alumni) {
+        cout << item.second << " - " << item.first << '\n';
+    }
+
+    cout << "áéíóúñÑäëïöü\n";
+    cout << endl;
+
+    return 0;
 }
-
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
