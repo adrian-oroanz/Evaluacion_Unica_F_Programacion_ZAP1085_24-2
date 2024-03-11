@@ -6,6 +6,8 @@
 #include <iostream>
 #include <locale>
 #include <string>
+#include <random>
+#include <ctime>
 #include "mokepon.h"
 
 
@@ -20,6 +22,7 @@ void special_menu(void);
 int32_t main(void)
 {
     std::locale::global(std::locale("es_MX.UTF-8"));
+    std::srand(std::time(nullptr));
 
     wstring name;
 

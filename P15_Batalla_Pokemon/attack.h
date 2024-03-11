@@ -1,23 +1,27 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+using std::wstring;
+
+
+enum class element_type : uint16_t
+{
+	NORMAL,
+	WATER,
+	EARTH,
+	FIRE
+};
 
 
 class attack
 {
 public:
-	enum class type : uint16_t;
+	wstring			name;
+	element_type	type;
 
 public:
 	attack(void);
+	attack(element_type);
 	~attack(void);
 };
-
-
-enum class attack::type : uint16_t
-{
-	FIRE,
-	WATER,
-	EARTH,
-};
-
