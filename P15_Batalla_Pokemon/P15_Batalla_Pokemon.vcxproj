@@ -139,12 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="attack.cpp" />
     <ClCompile Include="mokepon.cpp" />
     <ClCompile Include="P15_Batalla_Pokemon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="attack.h" />
     <ClInclude Include="mokepon.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

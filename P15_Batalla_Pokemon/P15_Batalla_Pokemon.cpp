@@ -24,7 +24,7 @@ int32_t main(void)
     std::locale::global(std::locale("es_MX.UTF-8"));
     std::srand(std::time(nullptr));
 
-    wstring name;
+    std::wstring name;
 
     std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
     std::wcout << L"Ingresa el nombre de tu pokemón: ";
@@ -39,9 +39,13 @@ int32_t main(void)
 }
 
 
+/*
+The main menu is the actual entry point of the program.
+The user can select 4 options to interact with the system.
+*/
 void main_menu(void)
 {
-    int32_t option = '\0';
+    char32_t option = '\0';
 
     while (option != 'D')
     {
