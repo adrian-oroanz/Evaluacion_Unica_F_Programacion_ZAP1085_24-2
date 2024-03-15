@@ -12,7 +12,8 @@
 void read_number(int32_t&, std::string);
 void fixed_matrix_task(void);
 void dynamic_matrix_task(void);
-void fill_matrix(int32_t**, int32_t, int32_t);
+void random_matrix_fill(int32_t**, int32_t, int32_t);
+void manual_matrix_fill(int32_t**, int32_t, int32_t);
 
 
 int main(void)
@@ -28,7 +29,7 @@ int main(void)
 
 void fixed_matrix_task(void)
 {
-    int32_t fixed_matrix[2][3];
+    int32_t fixed_matrix[2][3]{};
 
     std::cout << "Ingrese valores para la matriz 2x3:\n\n";
 
@@ -55,36 +56,34 @@ void fixed_matrix_task(void)
 
 void dynamic_matrix_task(void)
 {
-    int32_t m = 0,
-            n = 0;
+    int32_t cols = 0,
+            rows = 0;
 
-    read_number(n, "Ingresa la primera dimension de la matriz (n): ");
-    read_number(m, "Ingreas la segunda dimension de la matriz (m): ");
+    read_number(rows, "Ingresa la primera dimension de la matriz (m): ");
+    read_number(cols, "Ingreas la segunda dimension de la matriz (n): ");
 
     // Memory allocation of first dimension.
-    int32_t** dynamic_matrix = new int32_t*[n];
+    int32_t** dynamic_matrix = new int32_t*[rows];
 
     // Memory allocation of each row (2nd dimension).
-    for (int32_t i = 0; i < m; i++)
-        dynamic_matrix[i] = new int32_t[m];
+    for (int32_t i = 0; i < rows; i++)
+        dynamic_matrix[i] = new int32_t[cols];
 
-    if (n <= 3 || m <= 3)
-    {
-        // TODO: Finish the matrix filling by the user.
-    }
-    else fill_matrix(dynamic_matrix, n, m);
+    if (rows > 3 || cols > 3)
+		random_matrix_fill(dynamic_matrix, rows, cols);
+	else
+		manual_matrix_fill(dynamic_matrix, rows, cols);
 
-    // Free the memory on each row.
-    for (int32_t i = 0; i < m; i++)
-        delete[] dynamic_matrix[i];
+    // Free the memory of the multidimensional array.
+    for (int32_t i = 0; i < rows; i++)
+		delete[] dynamic_matrix[i];
 
-    // Free the memory of the matrix.
     delete[] dynamic_matrix;
 }
 
-void fill_matrix(int32_t** _Matrix, int32_t _M, int32_t _N)
+void random_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
 {
-    size_t matrix_size = _M * _N;
+    size_t matrix_size = _Rows * _Cols;
 
     // Stores all the indices of the matrix to shuffle them later.
     std::vector<int32_t> indices(matrix_size);
@@ -93,29 +92,39 @@ void fill_matrix(int32_t** _Matrix, int32_t _M, int32_t _N)
         indices[i] = i;
 
     // These are the random device and generator engines for pseudo random.
+    // Straight up witchcraft from the C++ developers.
     std::random_device device;
     std::mt19937 generator(device());
 
     // Literally shuffles all the stored indices in a random order.
     std::shuffle(indices.begin(), indices.end(), generator);
 
+    // Assigns a random number from 1 to 100 on a random index.
     for (int32_t i = 0; i < matrix_size; i++)
     {
-        int32_t rowIndex = indices[i] / _N;
-        int32_t colIndex = indices[i] % _N;
+        int32_t row_index = indices[i] / _Cols,
+				col_index = indices[i] % _Cols;
 
-        _Matrix[rowIndex][colIndex] = generator();
+		_Matrix[row_index][col_index] = (generator() % 100) + 1;
     }
 
-    for (int32_t i = 0; i < _M; i++)
+    // Prints the matrix.
+    for (int32_t i = 0; i < _Rows; i++)
     {
-        for (int32_t ii = 0; ii < _N; ii++)
+        for (int32_t ii = 0; ii < _Cols; ii++)
         {
-            std::cout << '[' << i << ',' << ii << "]: " << _Matrix[i][ii];
-            std::cout << std::endl;
+            std::cout << "[" << i << ", " << ii << "]: " << _Matrix[i][ii];
+            std::cout << '\n';
         }
+        
+        std::cout << std::endl;
     }
 }
+
+void manual_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
+{
+
+}   
 
 /*
 Reads an int32 sized number from the standard input and validates that
