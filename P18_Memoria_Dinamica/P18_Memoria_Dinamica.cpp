@@ -1,5 +1,6 @@
 // P18_Memoria_Dinamica.cpp
 // Adrian Orozco Anzures
+// Uso de memoria dinamica para matrices
 //
 
 #include <iostream>
@@ -33,23 +34,24 @@ void fixed_matrix_task(void)
 
     std::cout << "Ingrese valores para la matriz 2x3:\n\n";
 
+    // Prompts the user to fill every cell of the matrix.
     for (int32_t i = 0; i < 2; i++)
     {
         for (int32_t ii = 0; ii < 3; ii++)
         {
-            // This is the text that will be showed when asking the user
-            // for a number at the [i][ii] position in the matrix.
-            std::string in_text = "";
+			std::string in_text = "";
 
-            in_text += '[';
-            in_text += (i + '0');
-            in_text += ',';
-            in_text += (ii + '0');
-            in_text += "] = ";
+			in_text += '[';
+			in_text += (i + '0');
+			in_text += ',';
+			in_text += (ii + '0');
+			in_text += "] = ";
 
-            read_number(fixed_matrix[i][ii], in_text);
-        }
-    }
+			read_number(fixed_matrix[i][ii], in_text);
+		}
+
+        std::cout << std::endl;
+	}
 
     std::cout << std::endl;
 }
@@ -61,6 +63,8 @@ void dynamic_matrix_task(void)
 
     read_number(rows, "Ingresa la primera dimension de la matriz (m): ");
     read_number(cols, "Ingreas la segunda dimension de la matriz (n): ");
+
+    std::cout << std::endl;
 
     // Memory allocation of first dimension.
     int32_t** dynamic_matrix = new int32_t*[rows];
@@ -79,6 +83,28 @@ void dynamic_matrix_task(void)
 		delete[] dynamic_matrix[i];
 
     delete[] dynamic_matrix;
+}
+
+void manual_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
+{
+    // Prompts the user to fill every cell of the matrix.
+    for (int32_t i = 0; i < _Rows; i++)
+    {
+        for (int32_t ii = 0; ii < _Cols; ii++)
+        {
+            std::string in_text = "";
+
+            in_text += '[';
+            in_text += (i + '0');
+            in_text += ',';
+            in_text += (ii + '0');
+            in_text += "] = ";
+
+            read_number(_Matrix[i][ii], in_text);
+        }
+
+        std::cout << std::endl;
+    }
 }
 
 void random_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
@@ -100,6 +126,7 @@ void random_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
     std::shuffle(indices.begin(), indices.end(), generator);
 
     // Assigns a random number from 1 to 100 on a random index.
+    // Using indices arithmetic to get the row and column index.
     for (int32_t i = 0; i < matrix_size; i++)
     {
         int32_t row_index = indices[i] / _Cols,
@@ -119,12 +146,7 @@ void random_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
         
         std::cout << std::endl;
     }
-}
-
-void manual_matrix_fill(int32_t** _Matrix, int32_t _Rows, int32_t _Cols)
-{
-
-}   
+}  
 
 /*
 Reads an int32 sized number from the standard input and validates that
