@@ -3,8 +3,9 @@
 #include <string>
 #include <random>
 #include <ctime>
-#include "mokepon_move.h"
 using std::wstring;
+using std::random_device;
+using std::mt19937;
 
 
 class mokepon
@@ -23,15 +24,20 @@ private:
 	int16_t			base_health;
 	int16_t			base_attack;
 	int16_t			base_defense;
+	mt19937			random;
+	random_device	device;
 
 public:
 	mokepon(void);
+	mokepon(wstring);
 	~mokepon(void);
 
 public:
 	void use_attack(mokepon&, uint16_t);
-	void use_special();
-	void reset_attacks(void);
+	void use_enrage(void);
+	void use_defend(void);
+	void use_heal(void);
+	void generate_attacks(void);
 };
 
 

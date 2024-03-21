@@ -1,5 +1,2 @@
-﻿  mokepon.cpp
-C:\Users\ALUMNO\Desktop\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\mokepon.cpp(5,1): error C2512: 'attack': no hay disponible un constructor predeterminado adecuado
-C:\Users\ALUMNO\Desktop\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\attack.h(6,7): message : vea la declaración de 'attack'
-  P15_Batalla_Pokemon.cpp
-  Generando código...
+﻿  P15_Batalla_Pokemon.cpp
+  P15_Batalla_Pokemon.vcxproj -> C:\Users\ALUMNO\Desktop\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\Debug\P15_Batalla_Pokemon.exe
