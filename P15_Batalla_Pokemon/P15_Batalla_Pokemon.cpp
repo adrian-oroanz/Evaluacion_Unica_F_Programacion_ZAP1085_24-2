@@ -6,26 +6,31 @@
 #include <iostream>
 #include <locale>
 #include <string>
-#include <ctime>
 #include "mokepon.h"
 
 
 typedef char char8_t;
 
 
-std::wstring player_name;
+mokepon player, opponent;
 
 
 void read_mokepon_name(void);
 void show_main_menu(void);
 void show_battle_menu(void);
+void show_attacks_menu(void);
+void show_special_menu(void);
 
 
 int32_t main(void)
 {
     std::locale::global(std::locale("es_MX.UTF-8"));
 
-    read_mokepon_name();
+    std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
+    std::wcout << L"Ingresa el nombre de tu pokemón: ";
+
+    std::getline(std::wcin, player.name);
+
     show_main_menu();
 
     return 0;
@@ -39,7 +44,7 @@ void read_mokepon_name(void)
 {
     system("cls");
 
-    player_name.clear();
+    player.name.clear();
 
     std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
     std::wcout << L"Ingresa el nombre de tu pokemón: ";
@@ -47,13 +52,9 @@ void read_mokepon_name(void)
     std::wcin.clear();
     std::wcin.ignore(1i64, '\n');
 
-    std::getline(std::wcin, player_name);
+    std::getline(std::wcin, player.name);
 }
 
-/*
-The main menu is the actual entry point of the program.
-The user can select 4 options to interact with the system.
-*/
 void show_main_menu(void)
 {
     const char8_t EXIT_CASE = 'C';
@@ -86,18 +87,20 @@ void show_main_menu(void)
 
 void show_battle_menu(void)
 {
-    mokepon player(player_name),
-            opponent;
-
-    const char8_t EXIT_CASE = 'D';
+    const char8_t EXIT_CASE = 'C';
     char8_t option = '\0';
+
+    if (!opponent.is_alive())
+        opponent = mokepon::from(player);
 
     while (option != EXIT_CASE)
     {
         system("cls");
 
         std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
-        std::wcout << L"Menú de opciones:\n\n[A] Atacar\n[B] Defender\n[C] Curar\n[D] Huir\n";
+        std::wcout << L"* " << player.name << L" --- HP: " << player.get_health_points() << L" ~ ATT: " << player.get_attack_points() << L" ~ DEF: " << player.get_defense_points() << L"\n\n";
+        std::wcout << L"Menú de opciones:\n\n[A] Atacar\n[B] Especial\n[C] Huir\n";
+        std::wcout << L"\nIngresa una opción: ";
 
         option = std::cin.get();
         option = std::toupper(option);
@@ -105,11 +108,74 @@ void show_battle_menu(void)
         switch (option)
         {
         case 'A':
+            show_attacks_menu();
             break;
         case 'B':
+            show_special_menu();
             break;
+        default:
+            break;
+        }
+    }
+}
+
+void show_attacks_menu(void)
+{
+    char8_t option = '\0';
+
+    while (true)
+    {
+        system("cls");
+
+        std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
+        std::wcout << L"Lista de ataques:\n\n";
+
+        for (uint16_t i = 0; i < mokepon::MAX_ATTACKS; ++i)
+        {
+            mokepon::attack& attack = player.get_attack(i);
+
+            std::wcout << L"[" << i + 1 << L"] " << attack.name << L" ~ " << attack.damage << L" ~ " << mokepon::element_to_string(attack.type) << L"\n";
+        }
+
+        std::wcout << L"[0] Regresar\n";
+        std::wcout << L"\nIngresa una opción: ";
+
+		option = std::cin.get();
+		option = std::toupper(option);
+
+        if (option == '0')
+			return;
+    }
+}
+
+void show_special_menu(void)
+{
+    char8_t option = '\0';
+
+    while (true)
+    {
+		system("cls");
+
+		std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
+        std::wcout << L"Menú de opciones:\n\n[A] Enfurecer (+ATT)\n[B] Defender (+DEF)\n[C] Curar\n[D] Regresar\n";
+        std::wcout << L"\nIngresa una opción: ";
+
+        option = std::cin.get();
+        option = std::toupper(option);
+
+        switch (option)
+        {
+        case 'A':
+            player.use_enrage();
+			return;
+        case 'B':
+            player.use_defend();
+            return;
         case 'C':
-            break;
+            player.use_heal();
+            return;
+        case 'D':
+			return;
         default:
             break;
         }
