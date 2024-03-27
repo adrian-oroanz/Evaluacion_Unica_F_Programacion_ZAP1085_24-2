@@ -8,31 +8,73 @@ using std::random_device;
 using std::mt19937;
 
 
+typedef float float32_t;
+
+
+const wstring MOKEPON_NAMES[] =
+{
+	// Fire types
+	L"Charmanther",
+	L"Fireball",
+	// Water types
+	L"Waterbottle",
+	L"Waterfall",
+	// Grass types
+	L"Grassquatch",
+	L"Grasshopper",
+	// Electric types
+	L"Electruff",
+	L"Electrode",
+};
+
+const wstring ATTACK_NAMES[] =
+{
+	// Fire attacks
+	L"Ember",
+	L"Flamethrower",
+	// Water attacks
+	L"Water Gun",
+	L"Hydro Pump",
+	// Grass attacks
+	L"Vine Whip",
+	L"Razor Leaf",
+	// Electric attacks
+	L"Thunder Shock",
+	L"Thunderbolt",
+};
+
+
 class mokepon
 {
 public:
+	/*
+	Represents the different elements a mokepon and their attacks can have.
+	Fire is weak to Water,
+	Water is weak to Electric,
+	Electric is weak to Grass,
+	Grass is weak to Fire.
+	*/
 	enum class element : uint16_t
 	{
-		NORMAL = 0,
-		FIRE,
-		WATER,
-		GRASS,
-		ELECTRIC
+		NONE		= 0,
+		FIRE		= 1,
+		WATER		= 2,
+		GRASS		= 3,
+		ELECTRIC	= 4,
 	};
 
 public:
 	struct attack
 	{
 		wstring		name;
-		element		type;
-		int16_t		damage;
+		element		type	= element::NONE;
+		int16_t		damage	= 0;
 	};
 
 public:
 	static const uint16_t MAX_ATTACKS = 4;
 
 public:
-	static mokepon& from(mokepon&);
 	static wstring	element_to_string(element);
 
 public:
@@ -50,7 +92,10 @@ private:
 public:
 	mokepon(void) noexcept;
 	mokepon(wstring) noexcept;
+	mokepon(const mokepon&) noexcept;
 	~mokepon(void) noexcept;
+
+private:
 
 public:
 	void use_attack(mokepon&, uint16_t);

@@ -1,1 +1,5 @@
-﻿  P15_Batalla_Pokemon.vcxproj -> D:\Code\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\x64\Debug\P15_Batalla_Pokemon.exe
+﻿  P15_Batalla_Pokemon.cpp
+  mokepon.cpp
+  Generating Code...
+D:\Code\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\mokepon.cpp(99,24): warning C4244: '-=': conversion from 'float32_t' to 'int16_t', possible loss of data
+  P15_Batalla_Pokemon.vcxproj -> D:\Code\Evaluacion_Unica_F_Programacion_ZAP1085_24-2\P15_Batalla_Pokemon\x64\Debug\P15_Batalla_Pokemon.exe

@@ -1,22 +1,12 @@
 #include "mokepon.h"
 
 
-mokepon& mokepon::from(mokepon& _Mokepon)
-{
-	mokepon new_mokepon;
-
-	new_mokepon.base_attack = _Mokepon.base_attack;
-	new_mokepon.base_defense = _Mokepon.base_defense;
-
-	return new_mokepon;
-}
-
 wstring mokepon::element_to_string(element _Element)
 {
 	switch (_Element)
 	{
-	case element::NORMAL:
-		return L"Normal";
+	case element::NONE:
+		return L"None";
 	case element::FIRE:
 		return L"Fire";
 	case element::WATER:
@@ -31,14 +21,29 @@ wstring mokepon::element_to_string(element _Element)
 }
 
 
-mokepon::mokepon(void) noexcept : base_health(100), base_attack(1), base_defense(1), type(element::NORMAL), device(), random(device())
+mokepon::mokepon(void) noexcept : attacks(), base_health(100), base_attack(1), base_defense(1), device(), random(device())
 {
+	// Assigns a random type to the mokepon.
+	uint16_t rand_type = (random() % 4) + 1;
+
+	type = static_cast<element>(rand_type);
+
+	// Assigns a random name based on the type.
+	name = MOKEPON_NAMES[(random() % 2) + ((rand_type - 1) * 2)];
+
+	// Generates the attacks for the mokepon.
 	generate_attacks();
 }
 
 mokepon::mokepon(wstring _Name) noexcept : mokepon()
 {
 	name = _Name;
+}
+
+mokepon::mokepon(const mokepon& _Mokepon) noexcept : mokepon()
+{
+	base_attack = _Mokepon.base_attack;
+	base_defense = _Mokepon.base_defense;
 }
 
 mokepon::~mokepon(void) {}
@@ -50,22 +55,60 @@ void mokepon::generate_attacks(void)
 	{
 		int16_t rand_type = (random() % 4) + 1;
 
-		attacks[i].name = L"Attack " + std::to_wstring(i + 1);
-		attacks[i].damage = (random() % 10) + 1;
+		attacks[i].name = ATTACK_NAMES[(random() % 2) + ((rand_type - 1) * 2)];
+		attacks[i].damage = (random() % 6) + 5;
 		attacks[i].type = static_cast<element>(rand_type);
 	}
 }
 
+void mokepon::use_attack(mokepon& _Other, uint16_t _AttackIndex)
+{
+	attack& attack = attacks[_AttackIndex];
+	float32_t damage = attack.damage;
+
+	// Calculates the damage based on the attacker's attack and the defender's defense.
+	damage *= ((base_attack / 10.0F) + 1);
+	damage /= ((base_defense / 10.0F) + 1);
+	
+	// Checks if the attack is strong or weak against the other mokepon's type.
+	// If the attack type is strong against the defender type, the damage is doubled.
+
+	if (attack.type == element::FIRE && _Other.type == element::GRASS)
+		damage *= 2;
+	else if (attack.type == element::WATER && _Other.type == element::FIRE)
+		damage *= 2;
+	else if (attack.type == element::ELECTRIC && _Other.type == element::WATER)
+		damage *= 2;
+	else if (attack.type == element::GRASS && _Other.type == element::ELECTRIC)
+		damage *= 2;
+
+	// If the attack type is weak against the defender type, the damage is halved.
+
+	if (attack.type == element::FIRE && _Other.type == element::WATER)
+		damage /= 2;
+	else if (attack.type == element::WATER && _Other.type == element::GRASS)
+		damage /= 2;
+	else if (attack.type == element::GRASS && _Other.type == element::FIRE)
+		damage /= 2;
+	else if (attack.type == element::ELECTRIC && _Other.type == element::GRASS)
+		damage /= 2;
+
+	if (damage < 0)
+		damage = 0;
+
+	_Other.base_health -= damage;
+}
+
 void mokepon::use_enrage(void)
 {
-	int16_t rand_points = (random() % 2) + 1;
+	int16_t rand_points = (random() % 5) + 1;
 
 	base_attack += rand_points;
 }
 
 void mokepon::use_defend(void)
 {
-	int16_t rand_points = (random() % 3) + 1;
+	int16_t rand_points = (random() % 5) + 1;
 
 	base_defense += rand_points;
 }
@@ -109,9 +152,9 @@ bool mokepon::is_alive(void) const
 
 void mokepon::operator=(const mokepon& _Mokepon)
 {
-	name = _Mokepon.name;
-	type = _Mokepon.type;
-	base_health = _Mokepon.base_health;
-	base_attack = _Mokepon.base_attack;
-	base_defense = _Mokepon.base_defense;
+	name			= _Mokepon.name;
+	type			= _Mokepon.type;
+	base_health		= _Mokepon.base_health;
+	base_attack		= _Mokepon.base_attack;
+	base_defense	= _Mokepon.base_defense;
 }

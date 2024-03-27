@@ -91,14 +91,15 @@ void show_battle_menu(void)
     char8_t option = '\0';
 
     if (!opponent.is_alive())
-        opponent = mokepon::from(player);
+        opponent = mokepon{ player };
 
     while (option != EXIT_CASE)
     {
         system("cls");
 
         std::wcout << L"-= BATALLA POKEMÓN =-\n\n";
-        std::wcout << L"* " << player.name << L" --- HP: " << player.get_health_points() << L" ~ ATT: " << player.get_attack_points() << L" ~ DEF: " << player.get_defense_points() << L"\n\n";
+        std::wcout << L"* " << player.name << L" --- HP: " << player.get_health_points() << L" ~ ATT: " << player.get_attack_points() << L" ~ DEF: " << player.get_defense_points() << L"\n";
+        std::wcout << L"* " << opponent.name << L" --- HP: " << opponent.get_health_points() << L" ~ ATT: " << opponent.get_attack_points() << L" ~ DEF: " << opponent.get_defense_points() << L"\n\n";
         std::wcout << L"Menú de opciones:\n\n[A] Atacar\n[B] Especial\n[C] Huir\n";
         std::wcout << L"\nIngresa una opción: ";
 
@@ -145,6 +146,14 @@ void show_attacks_menu(void)
 
         if (option == '0')
 			return;
+
+        uint16_t attack_index = (option - '0') - 1;
+
+        if (attack_index < mokepon::MAX_ATTACKS)
+        {
+            player.use_attack(opponent, attack_index);
+            return;
+        }
     }
 }
 
