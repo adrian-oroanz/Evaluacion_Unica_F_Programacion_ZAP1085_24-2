@@ -61,14 +61,14 @@ void mokepon::generate_attacks(void)
 	}
 }
 
-void mokepon::use_attack(mokepon& _Other, uint16_t _AttackIndex)
+uint16_t mokepon::use_attack(mokepon& _Other, uint16_t _AttackIndex)
 {
 	attack& attack = attacks[_AttackIndex];
 	float32_t damage = attack.damage;
 
 	// Calculates the damage based on the attacker's attack and the defender's defense.
 	damage *= ((base_attack / 10.0F) + 1);
-	damage /= ((base_defense / 10.0F) + 1);
+	damage /= ((_Other.base_defense / 10.0F) + 1);
 	
 	// Checks if the attack is strong or weak against the other mokepon's type.
 	// If the attack type is strong against the defender type, the damage is doubled.
@@ -77,9 +77,9 @@ void mokepon::use_attack(mokepon& _Other, uint16_t _AttackIndex)
 		damage *= 2;
 	else if (attack.type == element::WATER && _Other.type == element::FIRE)
 		damage *= 2;
-	else if (attack.type == element::ELECTRIC && _Other.type == element::WATER)
-		damage *= 2;
 	else if (attack.type == element::GRASS && _Other.type == element::ELECTRIC)
+		damage *= 2;
+	else if (attack.type == element::ELECTRIC && _Other.type == element::WATER)
 		damage *= 2;
 
 	// If the attack type is weak against the defender type, the damage is halved.
@@ -97,44 +97,58 @@ void mokepon::use_attack(mokepon& _Other, uint16_t _AttackIndex)
 		damage = 0;
 
 	_Other.base_health -= damage;
+
+	if (_Other.base_health < 0)
+		_Other.base_health = 0;
+
+	return damage;
 }
 
-void mokepon::use_enrage(void)
+uint16_t mokepon::use_enrage(void)
 {
-	int16_t rand_points = (random() % 5) + 1;
+	// Generates a random number between 2 and 5.
+	int16_t rand_points = (random() % 4) + 2;
 
 	base_attack += rand_points;
+
+	return rand_points;
 }
 
-void mokepon::use_defend(void)
+uint16_t mokepon::use_defend(void)
 {
-	int16_t rand_points = (random() % 5) + 1;
+	// Generates a random number between 2 and 5.
+	int16_t rand_points = (random() % 4) + 2;
 
 	base_defense += rand_points;
+
+	return rand_points;
 }
 
-void mokepon::use_heal(void)
+uint16_t mokepon::use_heal(void)
 {
-	int16_t rand_points = (random() % 20) + 1;
+	// Generates a random number between 10 and 20.
+	int16_t rand_points = (random() % 11) + 10;
 
 	base_health += rand_points;
 
 	if (base_health > 100)
 		base_health = 100;
+
+	return rand_points;
 }
 
 
-int16_t mokepon::get_health_points(void) const
+uint16_t mokepon::get_health_points(void) const
 {
 	return base_health;
 }
 
-int16_t mokepon::get_attack_points(void) const
+uint16_t mokepon::get_attack_points(void) const
 {
 	return base_attack;
 }
 
-int16_t mokepon::get_defense_points(void) const
+uint16_t mokepon::get_defense_points(void) const
 {
 	return base_defense;
 }

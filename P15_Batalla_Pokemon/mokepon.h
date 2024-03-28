@@ -2,7 +2,6 @@
 
 #include <string>
 #include <random>
-#include <ctime>
 using std::wstring;
 using std::random_device;
 using std::mt19937;
@@ -95,21 +94,19 @@ public:
 	mokepon(const mokepon&) noexcept;
 	~mokepon(void) noexcept;
 
-private:
+public:
+	void		generate_attacks(void);
+	uint16_t	use_attack(mokepon&, uint16_t);
+	uint16_t	use_enrage(void);
+	uint16_t	use_defend(void);
+	uint16_t	use_heal(void);
 
 public:
-	void use_attack(mokepon&, uint16_t);
-	void use_enrage(void);
-	void use_defend(void);
-	void use_heal(void);
-	void generate_attacks(void);
-
-public:
-	int16_t get_health_points(void) const;
-	int16_t get_attack_points(void) const;
-	int16_t get_defense_points(void) const;
-	attack& get_attack(uint16_t);
-	bool	is_alive(void) const;
+	bool		is_alive(void) const;
+	uint16_t	get_health_points(void) const;
+	uint16_t	get_attack_points(void) const;
+	uint16_t	get_defense_points(void) const;
+	attack&		get_attack(uint16_t);
 
 public:
 	void operator=(const mokepon&);
